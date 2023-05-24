@@ -1,0 +1,81 @@
+@startuml generic-use-case-example
+scale 1.5
+skinparam BoxPadding 5
+skinparam ParticipantPadding 5
+
+
+actor "Alice" as alice
+actor "Bob" as bob
+box Clients #LightYellow
+participant "Alice\nWallet" as alice_wallet
+participant "Bob\nWallet" as bob_wallet
+endbox
+box POSSIBLE #LightGreen
+participant "POSSIBLE\nPortal" as portal
+participant "POSSIBLE\nCatalog" as catalog
+participant "Logging" as logging
+endbox
+box Data #LightCyan
+participant "Alice\nData Store" as alice_store
+participant "Bob\nData Store" as bob_store
+endbox
+box Connectors #LightBlue
+participant "Alice\nConnector" as alice_connector
+participant "Bob\nConnector" as bob_connector
+endbox
+
+alice -> portal: Register
+portal -> portal: Verify Alice
+portal --> alice: Return Key
+alice -> alice_wallet: Store Key
+alice_wallet --> alice: OK
+alice -> alice_store: Upload Data
+alice_store --> alice: OK
+alice -> alice_connector: Create Asset for Data
+alice_connector --> alice: OK
+
+bob -> portal: Register
+portal -> portal: Verify Bob
+portal --> bob: Return Key
+bob -> bob_wallet: Store Key
+bob_wallet --> bob: OK
+
+alice -> catalog: Login 
+catalog --> alice_wallet: Authenticate
+alice_wallet -> catalog: OK
+catalog --> alice: Logged In
+
+alice -> catalog: Create Data Offering
+catalog --> portal: Verify
+portal -> catalog: OK
+catalog -> catalog: Sign and store
+catalog --> alice: OK
+
+bob -> catalog: Search Data Offering
+catalog --> bob: Return
+
+bob -> catalog: Ask Data from Offering
+catalog --> portal: Redirect
+portal --> bob: Return Contract View
+
+bob -> portal: Init Data Transfer
+portal -> alice_connector: Init Data Transfer
+alice_connector -> logging: Log Transfer
+portal -> bob_connector: Init Data Transfer
+alice_store -> bob_store: Data Transfer
+alice_connector --> portal: OK
+bob_connector --> portal: OK
+portal --> bob: OK
+
+
+
+
+
+
+
+
+
+
+
+
+
