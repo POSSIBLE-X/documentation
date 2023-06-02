@@ -8,3 +8,4 @@ The directories contain the following content:
 
 ### Architecture
 - Documentation and illustrations of the POSSIBLE-X architecture
+- Documentation of the cloud infrastructure
