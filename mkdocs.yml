@@ -1,0 +1,23 @@
+site_name: POSSIBLE Documentation
+
+theme:
+  name: material
+  palette:
+    primary: blue
+    scheme: slate
+  features:
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+nav:
+  - Self Descriptions: self-descriptions.md

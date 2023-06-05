@@ -30,3 +30,6 @@ The directories contain the following content:
 
 #### Pre-Requisites and Preparation
 #### Issues
+
+### Docs
+- MkDocs Documentation for Publication

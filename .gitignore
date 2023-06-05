@@ -1,2 +1,10 @@
 .out
 .vscode
+.DS_Store
+
+public/
+bin
+include
+lib
+lib64
+pyvenv.cfg
