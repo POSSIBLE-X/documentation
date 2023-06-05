@@ -13,6 +13,7 @@ The directories contain the following content:
 ### Eclipse Data Space Components
 
 #### Relevant Background Information and Pre-Requisites
+* Developer Documentation for Eclipse Minimum Viable Dataspace: https://github.com/eclipse-edc/MinimumViableDataspace/tree/main/docs/developer
 
 #### Requirements
 
