@@ -1,4 +1,4 @@
-site_name: POSSIBLE Documentation
+site_name: POSSIBLE
 
 theme:
   name: material
@@ -6,7 +6,21 @@ theme:
     primary: blue
     scheme: slate
   features:
+    - navigation.tabs
     - content.code.copy
+    - navigation.indexes 
+  icon:
+    logo: fontawesome/solid/x
+
+copyright: Copyright &copy; 2023 POSSIBLE Project
+
+extra:
+  social:
+    - icon: fontawesome/solid/house
+      link: https://www.possible-gaia-x.eu/
+    - icon: fontawesome/brands/github
+      link: https://github.com/POSSIBLE-X
+
 
 markdown_extensions:
   - admonition
@@ -20,4 +34,13 @@ markdown_extensions:
   - pymdownx.superfences
 
 nav:
-  - Self Descriptions: self-descriptions.md
+  - Overview: index.md
+  - Architecture:
+    - architecture/index.md
+  - Access Control:
+    - access-control/index.md
+  - Catalog:
+    - catalog/index.md
+    - Self Descriptions: catalog/self-descriptions.md
+  - Connector:
+    - connector/index.md
