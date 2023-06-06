@@ -2,18 +2,45 @@
 
 The catalog supports the following self description types:
 
-- Dataset (core type and DCAT compliant)
+- Data Resources (core type and DCAT compliant)
 - Service Offering
 - Legal Person
 
-## Dataset
+
+## Data Resources
 
 !!! Reference
 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-    nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-    massa, nec semper lorem quam in massa.
+    [Gaia-X Specification about Data Resources](https://gaia-x.gitlab.io/policy-rules-committee/trust-framework/resource_and_subclasses/#data-resource)  
+    [Gaia-X Service Characteristics](https://gitlab.com/gaia-x/technical-committee/service-characteristics/-/blob/develop/single-point-of-truth/yaml/gax-trust-framework/gax-resource/data-resource.yaml)
 
+
+!!! example "Example Data Resource"
+
+    ```turtle
+    @prefix dcat:   <http://www.w3.org/ns/dcat#> .
+    @prefix dct:    <http://purl.org/dc/terms/> .
+
+    <https://possible.fokus.fraunhofer.de/set/data/test-dataset>
+        a                               dcat:Dataset ;
+        dct:description                 "This is an example Dataset 2"@en ;
+        dct:description                 "Das ist ein Beispiel-Datensatz"@de ;
+        dct:title                       "DCAT-AP 2.1.0 Example Dataset"@en ;
+        dct:title                       "DCAT-AP 2.1.0 Beispiel-Datensatz"@de ;
+        dcat:distribution               <https://piveau.eu/set/distribution/1> .
+
+    <https://possible.fokus.fraunhofer.de/set/distribution/1>
+        a                               dcat:Distribution ;
+        dct:license                     <http://dcat-ap.de/def/licenses/gfdl> ;
+        dcat:accessURL                  <https://data.europa.eu/api/hub/store/data/test123.csv> .
+
+    ```
+
+
+
+``` sh
+$ curl --location --request PUT 'http://example.com/resources/legal-person?id=example' --header 'Content-Type: text/turtle' --header 'X-API-Key: yourapikey' 
+```
 
 
 ## Legal Person
