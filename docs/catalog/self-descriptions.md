@@ -1,3 +1,21 @@
+# Self Descriptions
+
+The catalog supports the following self description types:
+
+- Dataset (core type and DCAT compliant)
+- Service Offering
+- Legal Person
+
+## Dataset
+
+!!! Reference
+
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
+    nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
+    massa, nec semper lorem quam in massa.
+
+
+
 ## Legal Person
 
 ### Example

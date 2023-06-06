@@ -44,7 +44,7 @@ nav:
     - catalog/index.md
     - Background: catalog/background.md
     - Access Control: catalog/auth.md
-    - Self Descriptions: catalog/self-descriptions.md
     - API Guide: catalog/api.md
+    - Self Descriptions: catalog/self-descriptions.md
   - Connector:
     - connector/index.md
