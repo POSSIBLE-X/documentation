@@ -3,7 +3,7 @@
 The catalog supports the following self description types:
 
 - Data Resources (core type and DCAT compliant)
-- Service Offering
+- Software Offering
 - Legal Person
 
 
@@ -18,32 +18,42 @@ The catalog supports the following self description types:
 !!! example "Example Data Resource"
 
     ```turtle
-    @prefix dcat:   <http://www.w3.org/ns/dcat#> .
-    @prefix dct:    <http://purl.org/dc/terms/> .
+        @prefix dcat:   <http://www.w3.org/ns/dcat#> .
+        @prefix dct:    <http://purl.org/dc/terms/> .
+        @prefix gax-core: <http://w3id.org/gaia-x/core#> .
+        @prefix gax-trust-framework: <http://w3id.org/gaia-x/gax-trust-framework#> .
+        @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-    <https://possible.fokus.fraunhofer.de/set/data/test-dataset>
-        a                               dcat:Dataset ;
-        dct:description                 "This is an example Dataset 2"@en ;
-        dct:description                 "Das ist ein Beispiel-Datensatz"@de ;
-        dct:title                       "DCAT-AP 2.1.0 Example Dataset"@en ;
-        dct:title                       "DCAT-AP 2.1.0 Beispiel-Datensatz"@de ;
-        dcat:distribution               <https://piveau.eu/set/distribution/1> .
+        <https://possible.fokus.fraunhofer.de/set/data/test-dataset>
+            a                                   dcat:Dataset ;
+            a                                   gax-trust-framework:DataResource ;
+            dct:description                     "This is an example for a Gaia-X Data Resource"@en ;
+            dct:title                           "Example Gaia-X Data Resource"@en ;
+            gax-trust-framework:producedBy      <https://piveau.io/set/resource/legal-person/some-legal-person-2> ;
+            gax-trust-framework:exposedThrough  <http://85.215.193.145:7081/> ;
+            gax-trust-framework:containsPII     "false"^^xsd:boolean ;
+            dcat:distribution                   <https://possible.fokus.fraunhofer.de/set/distribution/1> .
 
-    <https://possible.fokus.fraunhofer.de/set/distribution/1>
-        a                               dcat:Distribution ;
-        dct:license                     <http://dcat-ap.de/def/licenses/gfdl> ;
-        dcat:accessURL                  <https://data.europa.eu/api/hub/store/data/test123.csv> .
-
+        <https://possible.fokus.fraunhofer.de/set/distribution/1>
+            a                               dcat:Distribution ;
+            dct:license                     <http://dcat-ap.de/def/licenses/gfdl> ;
+            dcat:accessURL                  <http://85.215.193.145:9192/api/v1/data/assets/test-document_company2> .
     ```
 
-
-
 ``` sh
-$ curl --location --request PUT 'http://example.com/resources/legal-person?id=example' --header 'Content-Type: text/turtle' --header 'X-API-Key: yourapikey' 
+$ curl --location --request PUT 'https://possible.fokus.fraunhofer.de/api/hub/repo/test-provider/datasets/origin?originalId=test-data-resource' --header 'Content-Type: text/turtle' --header 'Authorization: Bearer <token>' 
 ```
 
 
 ## Legal Person
+
+
+!!! Reference
+
+    [Gaia-X Specification about Legal Person](https://gaia-x.gitlab.io/policy-rules-committee/trust-framework/participant/#legal-person)  
+    [Gaia-X Service Characteristics](https://gitlab.com/gaia-x/technical-committee/service-characteristics/-/blob/develop/single-point-of-truth/yaml/gax-trust-framework/gax-participant/legal-person.yaml)
+
+
 
 ### Example
 
@@ -81,15 +91,20 @@ $ curl --location --request PUT 'http://example.com/resources/legal-person?id=ex
     ```
 
 ``` sh
-$ curl --location --request PUT 'http://example.com/resources/legal-person?id=example' --header 'Content-Type: text/turtle' --header 'X-API-Key: yourapikey' 
+$ curl --location --request PUT 'https://possible.fokus.fraunhofer.de/api/hub/repo/resources/legal-person?id=example' --header 'Content-Type: text/turtle' --header 'Authorization: Bearer <token>' 
 ```
-
-
 
 
 ## Software Offering
 
-!!! example "Example Legal Person"
+!!! Reference
+
+    [Gaia-X Specification about Service Offerings](https://gaia-x.gitlab.io/policy-rules-committee/trust-framework/service_and_subclasses/#service-offering)  
+    [Gaia-X Service Characteristics](https://gitlab.com/gaia-x/technical-committee/service-characteristics/-/blob/develop/single-point-of-truth/yaml/gax-trust-framework/gax-service/software-offering.yaml)
+
+
+
+!!! example "Example Software Offering"
 
     ```turtle
     @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
@@ -121,7 +136,34 @@ $ curl --location --request PUT 'http://example.com/resources/legal-person?id=ex
     ```
 
 
+``` sh
+$ curl --location --request PUT 'https://possible.fokus.fraunhofer.de/api/hub/repo/resources/software-offering?id=example' --header 'Content-Type: text/turtle' --header 'Authorization: Bearer <token>' 
+```
 
 
-### Open Issues
-- Clarify the type of gax-trust-framework:registrationNumber
+### SPARQL Queries Example
+
+You can perform advances queries vie the SPARQL endpoint.
+
+**Example 1: Get a SaaS Software Offering from a specific provider**
+
+```sparql
+SELECT ?s ?n WHERE  {
+   ?s a gax-trust-framework:SoftwareOffering .
+   ?s gax-trust-framework:ServiceOfferingLocations "SaaS" .
+   ?s gax-core:offeredBy <https://possible.fokus.fraunhofer.de/fraunhofer-fokus> .
+   ?s gax-trust-framework:name ?n
+}
+```
+
+
+**Example 1: Get a Data Resource with no personal data**
+
+```sparql
+SELECT ?s WHERE  {
+   ?s a gax-trust-framework:DataResource .
+   ?s gax-trust-framework:containsPII "false"^^xsd:boolean .
+}
+
+```
+

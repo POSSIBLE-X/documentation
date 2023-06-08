@@ -1,6 +1,6 @@
 # Catalog
 
-The POSSIBLE-X Catalog is the registry of available data. It aims to be 
+The POSSIBLE-X Catalog is the registry of available data. It aims to be Gaia-X compliant.
 
 ## Features
 - Native RDF support
