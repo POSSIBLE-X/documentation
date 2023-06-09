@@ -1,16 +1,34 @@
 @startuml edc-possible-x-catalog-integration
 
 actor "Actor A" as ActorA
-participant "Consumer EDC" as ConsumerEDC
+
+participant "Portal UI (A)" as PortalUI
 participant "Consumer IONOS S3" as ConsumerIONOSS3
-participant "Provider IONOS S3" as ProviderIONOSS3
+participant "Consumer EDC" as ConsumerEDC
+participant "POSSIBLE-X Catalog" as PossibleXCatalog
+
 participant "Provider EDC" as ProviderEDC
+participant "Provider IONOS S3" as ProviderIONOSS3
+participant "Portal UI (B)" as PortalUI
+
 actor "Actor B" as ActorB
 
-ActorB -> UI : Upload File
+
 ActorB -> ProviderIONOSS3 : Upload File
-ActorB -> ProviderEDC : create Asset
-ActorB -> ProviderEDC : create Policy
-ActorB -> ProviderEDC : create Contract
+ActorB -> ProviderEDC : Create Asset
+ActorB -> ProviderEDC : Create Policy
+ActorB -> ProviderEDC : Create Contract Definition
+ProviderEDC -> PossibleXCatalog : Upload RDF (Data Asset SD)
+ActorA -> PossibleXCatalog : Retrieve Data Asset SD
+ActorA -> ConsumerEDC : Start Contract Negotiation
+ConsumerEDC <-> ProviderEDC : Contract Negotiation
+ActorA -> ConsumerEDC : Accept the Contract
+ActorA -> ConsumerEDC : Initiate Data Transfer
+ConsumerEDC -> ProviderEDC : Request File
+ProviderIONOSS3 -> ProviderEDC : Download File
+ProviderEDC -> ConsumerEDC : Download File
+ConsumerEDC -> ConsumerIONOSS3 : Store File
+
+
 
 @enduml
