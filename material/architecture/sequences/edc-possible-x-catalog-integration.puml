@@ -1,0 +1,16 @@
+@startuml edc-possible-x-catalog-integration
+
+actor "Actor A" as ActorA
+participant "Consumer EDC" as ConsumerEDC
+participant "Consumer IONOS S3" as ConsumerIONOSS3
+participant "Provider IONOS S3" as ProviderIONOSS3
+participant "Provider EDC" as ProviderEDC
+actor "Actor B" as ActorB
+
+ActorB -> UI : Upload File
+ActorB -> ProviderIONOSS3 : Upload File
+ActorB -> ProviderEDC : create Asset
+ActorB -> ProviderEDC : create Policy
+ActorB -> ProviderEDC : create Contract
+
+@enduml
