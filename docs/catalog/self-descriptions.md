@@ -194,6 +194,8 @@ This is a draft idea how a data resource that connects to EDC might look like.
 
 You can perform advances queries vie the SPARQL endpoint.
 
+Tip: Use the "Direct SPARQL Access" SPARQL Query Editor https://possible.fokus.fraunhofer.de/ld/sparql/ 
+
 **Example 1: Get a SaaS Software Offering from a specific provider**
 
 ```sparql
@@ -206,13 +208,23 @@ SELECT ?s ?n WHERE  {
 ```
 
 
-**Example 1: Get a Data Resource with no personal data**
+**Example 2: Get a Data Resource with no personal data**
 
 ```sparql
 SELECT ?s WHERE  {
    ?s a gax-trust-framework:DataResource .
    ?s gax-trust-framework:containsPII "false"^^xsd:boolean .
 }
-
 ```
 
+
+**Example 3: Get All Properties of all Data Resources but Limit Results to 100**
+
+```sparql
+PREFIX gaia-x-trust: <http://w3id.org/gaia-x/gax-trust-framework#>
+
+SELECT ?DataResource ?property ?value WHERE {
+  ?DataResource a gaia-x-trust:DataResource .
+  ?DataResource ?property ?value 
+} LIMIT 100
+```
