@@ -187,7 +187,48 @@ This is a draft idea how a data resource that connects to EDC might look like.
 
     ```
 
+``` sh
+$ curl --location --request PUT 'https://possible.fokus.fraunhofer.de/api/hub/repo/catalogues/test-provider/datasets/origin?originalId=hackathon-dataset' \
+--header 'Content-Type: text/turtle' \
+--header 'Authorization: Bearer <token>' \
+--data-raw '@prefix dcat:   <http://www.w3.org/ns/dcat#> .
+@prefix dct:    <http://purl.org/dc/terms/> .
+@prefix gax-core: <http://w3id.org/gaia-x/core#> .
+@prefix gax-trust-framework: <http://w3id.org/gaia-x/gax-trust-framework#> .
+@prefix possible-x: <https://possible-gaia-x.de/ns/#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+<https://possible.fokus.fraunhofer.de/set/data/test-dataset>
+    a                                   dcat:Dataset ;
+    a                                   gax-trust-framework:DataResource ;
+    dct:description                     "This is an example for a Gaia-X Data Resource"@en ;
+    dct:title                           "Example Gaia-X Data Resource"@en ;
+    gax-trust-framework:producedBy      <https://piveau.io/set/resource/some-legal-person/some-legal-person-2> ;
+    gax-trust-framework:exposedThrough  <http://85.215.202.146:8282/> ;
+    gax-trust-framework:containsPII     "false"^^xsd:boolean ;
+    possible-x:edcApiVersion            1;
+    possible-x:contractOfferId          "1:50f75a7a-5f81-4764-b2f9-ac258c3628e2" ;
+    possible-x:assetId                  "assetId" ;
+    possible-x:protocol                 possible-x:IdsMultipart ;  
+    possible-x:hasPolicy                [
+                                            a possible-x:Policy ;
+                                            possible-x:policyType possible-x:Set ;
+                                            possible-x:uid "231802-bb34-11ec-8422-0242ac120002" ;
+                                            possible-x:hasPermissions [
+                                                a possible-x:Permission ;
+                                                possible-x:target "assetId" ;
+                                                possible-x:action possible-x:Use ;
+                                                possible-x:edcType "dataspaceconnector:permission" ;
+                                            ] ;
+                                        ] ;
+    dcat:distribution                   <https://possible.fokus.fraunhofer.de/set/distribution/1> .
+
+<https://possible.fokus.fraunhofer.de/set/distribution/1>
+    a                               dcat:Distribution ;
+    dct:license                     <http://dcat-ap.de/def/licenses/gfdl> ;
+    dcat:accessURL                  <http://85.215.193.145:9192/api/v1/data/assets/test-document_company2> .
+' 
+```
 
 
 ### SPARQL Queries Example
