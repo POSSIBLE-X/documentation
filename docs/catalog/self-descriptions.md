@@ -145,7 +145,7 @@ $ curl --location --request PUT 'https://possible.fokus.fraunhofer.de/api/hub/re
 
 This is a draft idea how a data resource that connects to EDC might look like.
 
-!!! example "Example Software Offering"
+!!! example "Example Data Resource for POSSIBLE"
 
     ```turtle
     @prefix dcat:   <http://www.w3.org/ns/dcat#> .
@@ -187,6 +187,7 @@ This is a draft idea how a data resource that connects to EDC might look like.
 
     ```
 
+The command below is the example command to upload the data resource above to the catalog. Note that `edcApiVersion`, `contractOfferId`, `assetId`, `protocol` and `hasPolicy` must be synchronized with the values in EDC.
 ``` sh
 $ curl --location --request PUT 'https://possible.fokus.fraunhofer.de/api/hub/repo/catalogues/test-provider/datasets/origin?originalId=hackathon-dataset' \
 --header 'Content-Type: text/turtle' \
