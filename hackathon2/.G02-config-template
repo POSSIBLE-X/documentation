@@ -1,0 +1,8 @@
+# external IPs
+CONSUMER_IP=1.2.3.4
+PROVIDER_IP=5.6.7.8
+
+# buckets
+export CONSUMER_BUCKET=hackathon2-consumer-bucket
+export PROVIDER_BUCKET=hackathon2-provider-bucket
+
