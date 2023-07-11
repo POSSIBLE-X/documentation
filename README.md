@@ -66,3 +66,12 @@ Raw material used in the documentation.
 
 #### Pre-Requisites and Preparation
 #### Issues
+
+
+## Hackathon results
+
+### Hackathon 1
+
+### [Hackathon 2](./hackathon2/Readme.md)
+
+### Hackathon 3

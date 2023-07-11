@@ -8,3 +8,6 @@ include
 lib
 lib64
 pyvenv.cfg
+myenv/**
+hackathon2/possible-extension/.gradle/**
+hackathon2/possible-extension/build/**

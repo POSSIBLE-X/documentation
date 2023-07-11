@@ -1,0 +1,10 @@
+# external IPs
+CONSUMER_IP=85.215.209.37
+PROVIDER_IP=85.215.209.28
+
+# buckets
+export CONSUMER_BUCKET=edc-possible-consumer
+export PROVIDER_BUCKET=edc-provider
+
+# filename
+export FILENAME=device1-data.csv
