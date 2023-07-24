@@ -163,7 +163,7 @@ This is a draft idea how a data resource that connects to EDC might look like.
         gax-trust-framework:producedBy      <https://piveau.io/set/resource/legal-person/some-legal-person-2> ;
         gax-trust-framework:exposedThrough  <http://85.215.202.146:8282/> ;
         gax-trust-framework:containsPII     "false"^^xsd:boolean ;
-        possible-x:edcApiVersion            1;
+        possible-x:edcApiVersion            "1";
         possible-x:contractOfferId          "1:50f75a7a-5f81-4764-b2f9-ac258c3628e2" ;
         possible-x:assetId                  "assetId" ;
         possible-x:protocol                 possible-x:IdsMultipart ;  
@@ -207,7 +207,7 @@ $ curl --location --request PUT 'https://possible.fokus.fraunhofer.de/api/hub/re
     gax-trust-framework:producedBy      <https://piveau.io/set/resource/some-legal-person/some-legal-person-2> ;
     gax-trust-framework:exposedThrough  <http://85.215.202.146:8282/> ;
     gax-trust-framework:containsPII     "false"^^xsd:boolean ;
-    possible-x:edcApiVersion            1;
+    possible-x:edcApiVersion            "1";
     possible-x:contractOfferId          "1:50f75a7a-5f81-4764-b2f9-ac258c3628e2" ;
     possible-x:assetId                  "assetId" ;
     possible-x:protocol                 possible-x:IdsMultipart ;  
