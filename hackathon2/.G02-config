@@ -1,10 +1,20 @@
 # external IPs
-CONSUMER_IP=85.215.209.37
-PROVIDER_IP=85.215.209.28
+export CONSUMER_IP=85.215.202.38
+export PROVIDER_IP=85.215.202.163
 
 # buckets
-export CONSUMER_BUCKET=edc-possible-consumer
-export PROVIDER_BUCKET=edc-provider
+export CONSUMER_BUCKET=poss4consbuck7
+export PROVIDER_BUCKET=hackathon2-provider-bucket
+
+# filename
+export FILENAME=device1-data.csv
+# external IPs
+export CONSUMER_IP=85.215.202.38
+export PROVIDER_IP=85.215.202.163
+
+# buckets
+export CONSUMER_BUCKET=poss4consbuck7
+export PROVIDER_BUCKET=hackathon2-provider-bucket
 
 # filename
 export FILENAME=device1-data.csv
