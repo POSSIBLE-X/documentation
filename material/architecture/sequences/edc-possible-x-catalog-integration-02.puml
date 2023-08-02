@@ -1,0 +1,71 @@
+@startuml edc-possible-x-catalog-integration-02
+
+actor "Consumer User" as Consumer_User
+
+participant "Portal UI\n(Consumer Pages)" as Portal_UI_Consumer
+participant "IONOS S3\n(Consumer)" as ConsumerIONOSS3
+participant "EDC Connector\n(Consumer)" as ConsumerEDC
+
+participant "POSSIBLE-X Catalog" as PossibleXCatalog
+
+participant "EDC Connector\n(Provider)" as ProviderEDC
+participant "IONOS S3\n(Provider)" as ProviderIONOSS3
+participant "Portal UI\n(Provider Pages)" as Portal_UI_Provider
+
+actor "Provider User" as Provider_User
+
+
+Provider_User -> ProviderIONOSS3 : Upload File
+
+Provider_User -> Portal_UI_Provider : Input Data Asset
+activate Portal_UI_Provider
+Portal_UI_Provider -> ProviderEDC : Create Data Asset
+deactivate Portal_UI_Provider
+
+Provider_User -> Portal_UI_Provider : Input Policy
+activate Portal_UI_Provider
+Portal_UI_Provider -> ProviderEDC : Create Policy
+deactivate Portal_UI_Provider
+
+Provider_User -> Portal_UI_Provider : Input Contract Definition
+activate Portal_UI_Provider
+Portal_UI_Provider -> ProviderEDC : Create Contract Definition
+deactivate Portal_UI_Provider
+
+
+ProviderEDC -> ProviderEDC : Capture \n"Create Contract"\nEvent
+activate ProviderEDC
+ProviderEDC -> PossibleXCatalog : Upload RDF \n(POSSIBLE Data\nResource SD)
+note left: The POSSIBLE Data Resource\ncontains all needed\ninformation about the Data Asset.
+deactivate ProviderEDC
+
+
+Consumer_User -> PossibleXCatalog : Search for POSSIBLE Data Resource SD
+
+Consumer_User -> Portal_UI_Consumer : Init. Contract Negotiation
+activate Portal_UI_Consumer
+Portal_UI_Consumer -> PossibleXCatalog : Retrieve POSSIBLE Data Resource SD
+Portal_UI_Consumer -> ConsumerEDC : Start Contract Negotiation
+note right: Based on the contract offer ID inside\nof the POSSIBLE Data Resource SD
+deactivate Portal_UI_Consumer
+activate ConsumerEDC 
+ConsumerEDC <-> ProviderEDC : Contract Negotiation
+deactivate ConsumerEDC
+
+Consumer_User -> Portal_UI_Consumer : Init. Accept Contract
+activate Portal_UI_Consumer
+Portal_UI_Consumer -> ConsumerEDC : Accept Contract
+deactivate Portal_UI_Consumer
+
+Consumer_User -> Portal_UI_Consumer : Init. Data Transfer
+note right: Later, this data transfer needs to be initiated from\nan IT system in the consumer's organization in general.
+activate Portal_UI_Consumer
+Portal_UI_Consumer -> ConsumerEDC : Initiate Data Transfer
+deactivate Portal_UI_Consumer
+ConsumerEDC -> ProviderEDC : Request File
+ProviderIONOSS3 -> ProviderEDC : Download File
+ProviderEDC -> ConsumerEDC : Download File
+ConsumerEDC -> ConsumerIONOSS3 : Store File
+
+
+@enduml
