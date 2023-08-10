@@ -41,7 +41,8 @@ In our hackathon case, [the selection is empty](https://github.com/POSSIBLE-X/do
 A `dcat:Dataset` in the Provider Connector also has a list called `odrl:hasPolicy`, which as far as I understand is the [list of the Contract Offer](https://github.com/eclipse-edc/Connector/blob/main/spi/common/catalog-spi/src/main/java/org/eclipse/edc/catalog/spi/Catalog.java#L35).
 From this list we can see that each `dcat:Dataset` is associated with every Contract Definition, creating a Contract Offer with `@id`.
 __This `@id` is the value that should be stored as the `possible-x:contractOfferId` in POSSIBLE Data Resource in POSSIBLE-X Catalogue__, as it is required for contract negotiation.
-<mark>We have 2 alternatives to quickly fix our current issue:</mark>
+> [!NOTE]
+> We have 2 alternatives to quickly fix our current issue:
 - Since an asset can have multiple contract offers, store all associated contract offer IDs in `possible-x:contractOfferId`. When the Customers want to consume this asset, let them pick just one ID.
 - Just pick one contract offer ID and store it in `possible-x:contractOfferId`.
 
