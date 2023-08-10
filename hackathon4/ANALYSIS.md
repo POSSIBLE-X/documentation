@@ -34,7 +34,7 @@ This `edc:id` is what we know as the asset ID.
 
 #### Contract Definition
 `Step 3 - Create ContractOffering` on the [Provider View](https://possible.fokus.fraunhofer.de/provider?locale=en) is misleading.
-This step should be called Contract Definition, as the endpoint name suggests (`/management/v2/contractdefinitions`), because this step only associates policies to a selection of assets to generate the contract offers that will be put in the Provider Catalog.
+This step should be called Contract Definition, as the endpoint name suggests (`/management/v2/contractdefinitions`), because this step only associates policies to a selection of assets to generate the contract offers that will be put in the Provider Connector.
 In our hackathon case, [the selection is empty](https://github.com/POSSIBLE-X/documentation/blob/6348ad6d263c272b8365ab1623e2dcaca4177e0f/hackathon2/G02.sh#L122C28-L122C28), so every asset is attached to these policies ([#Ref](https://github.com/eclipse-edc/Samples/tree/main/transfer/transfer-06-consumer-pull-http#5-create-a-contract-definition-on-provider)).
 
 #### Contract Offer
