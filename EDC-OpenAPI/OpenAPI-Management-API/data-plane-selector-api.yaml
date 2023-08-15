@@ -1,0 +1,250 @@
+openapi: 3.0.1
+paths:
+  /select:
+    post:
+      description: Finds the best fitting data plane instance for a particular query
+      operationId: find
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SelectionRequestSchema'
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DataPlaneInstanceSchema'
+          description: The DataPlane instance that fits best for the given selection
+            request
+        "204":
+          description: No suitable DataPlane instance was found
+        "400":
+          content:
+            '*/*':
+              schema:
+                type: array
+                example: null
+                items:
+                  $ref: '#/components/schemas/ApiErrorDetail'
+          description: Request body was malformed
+      tags:
+      - Dataplane Selector
+  /v2/dataplanes:
+    get:
+      description: Returns a list of all currently registered data plane instances
+      operationId: getAll
+      responses:
+        "204":
+          description: A (potentially empty) list of currently registered data plane
+            instances
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                example: null
+                items:
+                  $ref: '#/components/schemas/ApiErrorDetail'
+          description: Request body was malformed
+      tags:
+      - Dataplane Selector
+    post:
+      description: Adds one datatplane instance to the internal database of the selector
+      operationId: addEntry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataPlaneInstanceSchema'
+      responses:
+        "200":
+          description: Entry was added successfully to the database
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                example: null
+                items:
+                  $ref: '#/components/schemas/ApiErrorDetail'
+          description: Request body was malformed
+      tags:
+      - Dataplane Selector
+  /v2/dataplanes/select:
+    post:
+      description: Finds the best fitting data plane instance for a particular query
+      operationId: find_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SelectionRequestSchema'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataPlaneInstanceSchema'
+          description: The DataPlane instance that fits best for the given selection
+            request
+        "204":
+          description: No suitable DataPlane instance was found
+        "400":
+          content:
+            application/json:
+              schema:
+                type: array
+                example: null
+                items:
+                  $ref: '#/components/schemas/ApiErrorDetail'
+          description: Request body was malformed
+      tags:
+      - Dataplane Selector
+components:
+  schemas:
+    ApiErrorDetail:
+      type: object
+      example: null
+      properties:
+        invalidValue:
+          type: object
+          example: null
+        message:
+          type: string
+          example: null
+        path:
+          type: string
+          example: null
+        type:
+          type: string
+          example: null
+    DataAddress:
+      type: object
+      example: null
+      properties:
+        '@type':
+          type: string
+          example: https://w3id.org/edc/v0.0.1/ns/DataAddress
+        type:
+          type: string
+          example: null
+    DataPlaneInstanceSchema:
+      type: object
+      example:
+        '@id': your-dataplane-id
+        url: http://somewhere.com:1234/api/v1
+        allowedSourceTypes:
+        - source-type1
+        - source-type2
+        allowedDestTypes:
+        - your-dest-type
+      properties:
+        '@id':
+          type: string
+          example: null
+        '@type':
+          type: string
+          example: https://w3id.org/edc/v0.0.1/ns/DataPlaneInstance
+        allowedDestTypes:
+          type: array
+          example: null
+          items:
+            type: string
+            example: null
+          uniqueItems: true
+        allowedSourceTypes:
+          type: array
+          example: null
+          items:
+            type: string
+            example: null
+          uniqueItems: true
+        lastActive:
+          type: integer
+          format: int64
+          example: null
+        turnCount:
+          type: integer
+          format: int32
+          example: null
+        url:
+          type: string
+          format: url
+          example: null
+    JsonArray:
+      type: array
+      example: null
+      items:
+        $ref: '#/components/schemas/JsonValue'
+      properties:
+        empty:
+          type: boolean
+          example: null
+        valueType:
+          type: string
+          enum:
+          - ARRAY
+          - OBJECT
+          - STRING
+          - NUMBER
+          - "TRUE"
+          - "FALSE"
+          - "NULL"
+          example: null
+    JsonObject:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/JsonValue'
+      example: null
+      properties:
+        empty:
+          type: boolean
+          example: null
+        valueType:
+          type: string
+          enum:
+          - ARRAY
+          - OBJECT
+          - STRING
+          - NUMBER
+          - "TRUE"
+          - "FALSE"
+          - "NULL"
+          example: null
+    JsonValue:
+      type: object
+      example: null
+      properties:
+        valueType:
+          type: string
+          enum:
+          - ARRAY
+          - OBJECT
+          - STRING
+          - NUMBER
+          - "TRUE"
+          - "FALSE"
+          - "NULL"
+          example: null
+    SelectionRequestSchema:
+      type: object
+      example:
+        source:
+          '@type': https://w3id.org/edc/v0.0.1/ns/DataAddress
+          type: test-src1
+        destination:
+          '@type': https://w3id.org/edc/v0.0.1/ns/DataAddress
+          type: test-dst2
+        strategy: you_custom_strategy
+      properties:
+        '@type':
+          type: string
+          example: https://w3id.org/edc/v0.0.1/ns/SelectionRequest
+        destination:
+          $ref: '#/components/schemas/DataAddress'
+        source:
+          $ref: '#/components/schemas/DataAddress'
+        strategy:
+          type: string
+          example: null
