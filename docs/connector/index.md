@@ -15,8 +15,8 @@ See [possible-x-edc-extension](https://github.com/POSSIBLE-X/possible-x-edc-exte
 
 ### Currently deployed POSSIBLE EDC instances
 
-- consumer: https://consumer.possible.daiteap.com:443
-- provider: https://provider.possible.daiteap.com:443
+- consumer: https://consumer.possible-x.de
+- provider: https://provider.possible-x.de
 
 ### Issues with Parameters and Documentation
 
