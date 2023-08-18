@@ -16,7 +16,6 @@ Follow this [documentation](https://github.com/POSSIBLE-X/possible-x-edc-extensi
 
 ## Usage
 
-
 We will have to call some URL's in order to transfer the file:
 
 1) Asset creation for the consumer
