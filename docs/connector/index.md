@@ -11,24 +11,12 @@ On the client there some basic steps that need to be done:
 
 ### Deployment to IONOS
 
-See [README.md](https://github.com/ionos-cloud/edc-ionos-s3/blob/main/deployment/README.md) for details.
+See [possible-x-edc-extension](https://github.com/POSSIBLE-X/possible-x-edc-extension) for details.
 
-Config:
-set variables:
+### Currently deployed POSSIBLE EDC instances
 
-* namespace
-* kubeconfig
-* vaultname
-* s3_access_key
-* s3_secret_key
-* ...endpoint...
-
-### Last Preparations and Checks on the Client
-
-1. Set env vars for the IP addresses of the connectors.
-2. Test out the connector availability through their health check entpoints with curl.
-
-See section "Configure the external IPs" in the main [README.md](https://github.com/ionos-cloud/edc-ionos-s3/blob/main/example/file-transfer-multiple-instances/README.md)
+- consumer: https://consumer.possible.daiteap.com:443
+- provider: https://provider.possible.daiteap.com:443
 
 ### Issues with Parameters and Documentation
 
