@@ -18,14 +18,14 @@ Follow this [documentation](https://github.com/POSSIBLE-X/possible-x-edc-extensi
 
 We will have to call some URL's in order to transfer the file:
 
-1) Asset creation for the consumer
+### 1) Asset creation for the consumer
 - @id (you can put whatever you want, will be use one step 3)
 - name (will be sent to the Possible api)
 - description (will be sent to the Possible api)
 
 
 ```
-### curl -d '{
+ curl -d '{
            "@context": {
              "edc": "https://w3id.org/edc/v0.0.1/ns/"
            },
