@@ -35,30 +35,32 @@ deactivate Portal_UI_Provider
 
 ProviderEDC -> ProviderEDC : Capture \n"Create Contract"\nEvent
 activate ProviderEDC
-ProviderEDC -> PossibleXCatalog : Upload RDF \n(POSSIBLE Data\nResource SD)
+ProviderEDC -> PossibleXCatalog : Upload RDF \n(POSSIBLE Data\nResource)
 note left: The POSSIBLE Data Resource\ncontains all needed\ninformation about the Data Asset.
 deactivate ProviderEDC
 
 
-Consumer_User -> PossibleXCatalog : Search for POSSIBLE Data Resource SD
+Consumer_User -> PossibleXCatalog : Search for POSSIBLE Data Resource
 
 Consumer_User -> Portal_UI_Consumer : Init. Contract Negotiation
 activate Portal_UI_Consumer
-Portal_UI_Consumer -> PossibleXCatalog : Retrieve POSSIBLE Data Resource SD
-Portal_UI_Consumer -> ConsumerEDC : Start Contract Negotiation
-note right: Based on the contract offer ID inside\nof the POSSIBLE Data Resource SD
+Portal_UI_Consumer -> PossibleXCatalog : Retrieve POSSIBLE Data Resource
+Portal_UI_Consumer -> ConsumerEDC : Initiate Contract Negotiation
+note right: Based on the contract offer ID and other metadata infos inside\nof the POSSIBLE Data Resource.\nEDC API /management/v2/contractnegotiations\nJava Method 'ContractNegotiationApiController.initiateContractNegotiation'
 deactivate Portal_UI_Consumer
 activate ConsumerEDC 
 ConsumerEDC <-> ProviderEDC : Contract Negotiation
 deactivate ConsumerEDC
 
-Consumer_User -> Portal_UI_Consumer : Init. Accept Contract
+Consumer_User -> Portal_UI_Consumer : Check Negotiation Status
+note right: The page needs to check the negotiation status\nat least once in the portal.
 activate Portal_UI_Consumer
-Portal_UI_Consumer -> ConsumerEDC : Accept Contract
+Portal_UI_Consumer -> ConsumerEDC : Poll Negotiation Status\nand Get Agreement ID
+note right: EDC API /management/v2/contractnegotiations/{id}\nJava Method 'ContractNegotiationApiController.getNegotiation'
 deactivate Portal_UI_Consumer
 
 Consumer_User -> Portal_UI_Consumer : Init. Data Transfer
-note right: Later, this data transfer needs to be initiated from\nan IT system in the consumer's organization in general.
+note right: Later, this data transfer will likely need to be triggered from\nan IT system in the consumer's organization in general.
 activate Portal_UI_Consumer
 Portal_UI_Consumer -> ConsumerEDC : Initiate Data Transfer
 deactivate Portal_UI_Consumer
