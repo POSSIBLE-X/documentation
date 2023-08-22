@@ -8,13 +8,13 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/ContractDefinitionInput'
+              $ref: '#/components/schemas/ContractDefinitionRequestDto'
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/IdResponse'
+                $ref: '#/components/schemas/IdResponseDto'
           description: contract definition was created successfully. Returns the Contract
             Definition Id and created timestamp
         "400":
@@ -46,7 +46,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/ContractDefinitionInput'
+              $ref: '#/components/schemas/ContractDefinitionRequestDto'
       responses:
         "204":
           description: Contract definition was updated successfully
@@ -78,7 +78,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/QuerySpec'
+              $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
           content:
@@ -87,7 +87,7 @@ paths:
                 type: array
                 example: null
                 items:
-                  $ref: '#/components/schemas/ContractDefinitionOutput'
+                  $ref: '#/components/schemas/ContractDefinitionResponseDto'
           description: The contract definitions matching the query
         "400":
           content:
@@ -152,7 +152,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ContractDefinitionOutput'
+                $ref: '#/components/schemas/ContractDefinitionResponseDto'
           description: The contract definition
         "400":
           content:
@@ -181,7 +181,7 @@ components:
       example: null
       properties:
         invalidValue:
-          type: object
+          type: string
           example: null
         message:
           type: string
@@ -192,22 +192,19 @@ components:
         type:
           type: string
           example: null
-    ContractDefinitionInput:
+    ContractDefinitionRequestDto:
       type: object
-      example:
-        '@context':
-          edc: https://w3id.org/edc/v0.0.1/ns/
-        '@id': definition-id
-        accessPolicyId: asset-policy-id
-        contractPolicyId: contract-policy-id
-        assetsSelector: []
+      example: null
       properties:
+        '@context':
+          type: object
+          example: null
         '@id':
           type: string
           example: null
         '@type':
           type: string
-          example: https://w3id.org/edc/v0.0.1/ns/ContractDefinition
+          example: null
         accessPolicyId:
           type: string
           example: null
@@ -215,27 +212,23 @@ components:
           type: array
           example: null
           items:
-            $ref: '#/components/schemas/Criterion'
+            $ref: '#/components/schemas/CriterionDto'
         contractPolicyId:
           type: string
           example: null
-    ContractDefinitionOutput:
+    ContractDefinitionResponseDto:
       type: object
-      example:
-        '@context':
-          edc: https://w3id.org/edc/v0.0.1/ns/
-        '@id': definition-id
-        edc:accessPolicyId: asset-policy-id
-        edc:contractPolicyId: contract-policy-id
-        edc:assetsSelector: []
-        edc:createdAt: 1688465655
+      example: null
       properties:
+        '@context':
+          type: object
+          example: null
         '@id':
           type: string
           example: null
         '@type':
           type: string
-          example: https://w3id.org/edc/v0.0.1/ns/ContractDefinition
+          example: null
         accessPolicyId:
           type: string
           example: null
@@ -243,7 +236,7 @@ components:
           type: array
           example: null
           items:
-            $ref: '#/components/schemas/Criterion'
+            $ref: '#/components/schemas/CriterionDto'
         contractPolicyId:
           type: string
           example: null
@@ -251,19 +244,16 @@ components:
           type: integer
           format: int64
           example: null
-    Criterion:
+    CriterionDto:
       type: object
-      example:
-        '@context':
-          edc: https://w3id.org/edc/v0.0.1/ns/
-        '@type': Criterion
-        operandLeft: fieldName
-        operator: =
-        operandRight: some value
+      example: null
       properties:
+        '@context':
+          type: object
+          example: null
         '@type':
           type: string
-          example: https://w3id.org/edc/v0.0.1/ns/Criterion
+          example: null
         operandLeft:
           type: object
           example: null
@@ -273,15 +263,20 @@ components:
         operator:
           type: string
           example: null
-    IdResponse:
+      required:
+      - operandLeft
+      - operator
+    IdResponseDto:
       type: object
-      example:
-        '@context':
-          edc: https://w3id.org/edc/v0.0.1/ns/
-        '@id': id-value
-        createdAt: 1688465655
+      example: null
       properties:
+        '@context':
+          type: object
+          example: null
         '@id':
+          type: string
+          example: null
+        '@type':
           type: string
           example: null
         createdAt:
@@ -343,26 +338,21 @@ components:
           - "FALSE"
           - "NULL"
           example: null
-    QuerySpec:
+    QuerySpecDto:
       type: object
-      example:
-        '@context':
-          edc: https://w3id.org/edc/v0.0.1/ns/
-        '@type': QuerySpec
-        offset: 5
-        limit: 10
-        sortOrder: DESC
-        sortField: fieldName
-        filterExpression: []
+      example: null
       properties:
+        '@context':
+          type: object
+          example: null
         '@type':
           type: string
-          example: https://w3id.org/edc/v0.0.1/ns/QuerySpec
+          example: null
         filterExpression:
           type: array
           example: null
           items:
-            $ref: '#/components/schemas/Criterion'
+            $ref: '#/components/schemas/CriterionDto'
         limit:
           type: integer
           format: int32
