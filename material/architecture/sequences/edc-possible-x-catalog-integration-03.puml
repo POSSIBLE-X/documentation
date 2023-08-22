@@ -1,0 +1,78 @@
+@startuml edc-possible-x-catalog-integration-02
+
+actor "Consumer User" as Consumer_User
+
+participant "Portal UI\n(Consumer Pages)" as Portal_UI_Consumer
+participant "IONOS S3\n(Consumer)" as ConsumerIONOSS3
+participant "EDC Connector\n(Consumer)" as ConsumerEDC
+
+participant "POSSIBLE-X Catalog" as PossibleXCatalog
+
+participant "EDC Connector\n(Provider)" as ProviderEDC
+participant "IONOS S3\n(Provider)" as ProviderIONOSS3
+participant "Portal UI\n(Provider Pages)" as Portal_UI_Provider
+
+actor "Provider User" as Provider_User
+
+
+Provider_User -> ProviderIONOSS3 : Upload File
+
+Provider_User -> Portal_UI_Provider : Input Data Asset
+activate Portal_UI_Provider
+Portal_UI_Provider -> ProviderEDC : Create Data Asset
+deactivate Portal_UI_Provider
+
+Provider_User -> Portal_UI_Provider : Input Policy
+activate Portal_UI_Provider
+Portal_UI_Provider -> ProviderEDC : Create Policy
+deactivate Portal_UI_Provider
+
+Provider_User -> Portal_UI_Provider : Input Contract Definition
+activate Portal_UI_Provider
+Portal_UI_Provider -> ProviderEDC : Create Contract Definition
+deactivate Portal_UI_Provider
+
+
+ProviderEDC -> ProviderEDC : Capture \n"Create Contract Definition"\nEvent
+activate ProviderEDC
+ProviderEDC -> PossibleXCatalog : Upload RDF \n(POSSIBLE Data\nResource)
+note left: The POSSIBLE Data Resource\ncontains some needed\ninformation about the Data Asset.
+deactivate ProviderEDC
+ProviderEDC -> ProviderEDC : Capture created \n"ContractOffer"\n for the "Contract Definition"
+activate ProviderEDC
+ProviderEDC -> PossibleXCatalog : Update existing RDF \n(POSSIBLE Data\nResource) with ContractOfferID
+note left: The POSSIBLE Data Resource\ncontains all needed\ninformation about the Data Asset.
+deactivate ProviderEDC
+
+
+Consumer_User -> PossibleXCatalog : Search for POSSIBLE Data Resource
+
+Consumer_User -> Portal_UI_Consumer : Init. Contract Negotiation
+activate Portal_UI_Consumer
+Portal_UI_Consumer -> PossibleXCatalog : Retrieve POSSIBLE Data Resource
+Portal_UI_Consumer -> ConsumerEDC : Initiate Contract Negotiation
+note right: Based on the contract offer ID and other metadata infos inside\nof the POSSIBLE Data Resource.\nEDC API /management/v2/contractnegotiations\nJava Method 'ContractNegotiationApiController.initiateContractNegotiation'
+deactivate Portal_UI_Consumer
+activate ConsumerEDC 
+ConsumerEDC <-> ProviderEDC : Contract Negotiation
+deactivate ConsumerEDC
+
+Consumer_User -> Portal_UI_Consumer : Check Negotiation Status
+note right: The page needs to check the negotiation status\nat least once in the portal.
+activate Portal_UI_Consumer
+Portal_UI_Consumer -> ConsumerEDC : Poll Negotiation Status\nand Get Agreement ID
+note right: EDC API /management/v2/contractnegotiations/{id}\nJava Method 'ContractNegotiationApiController.getNegotiation'
+deactivate Portal_UI_Consumer
+
+Consumer_User -> Portal_UI_Consumer : Init. Data Transfer
+note right: Later, this data transfer will likely need to be triggered from\nan IT system in the consumer's organization in general.
+activate Portal_UI_Consumer
+Portal_UI_Consumer -> ConsumerEDC : Initiate Data Transfer
+deactivate Portal_UI_Consumer
+ConsumerEDC -> ProviderEDC : Request File
+ProviderIONOSS3 -> ProviderEDC : Download File
+ProviderEDC -> ConsumerEDC : Download File
+ConsumerEDC -> ConsumerIONOSS3 : Store File
+
+
+@enduml
