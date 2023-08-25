@@ -42,6 +42,7 @@ nav:
     - architecture/index.md
   - Access Control:
     - access-control/index.md
+    - Signing Tool: access-control/signing-tool.md
   - Catalog:
     - catalog/index.md
     - Background: catalog/background.md
