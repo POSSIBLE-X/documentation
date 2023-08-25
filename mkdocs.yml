@@ -35,7 +35,9 @@ markdown_extensions:
   - pymdownx.superfences
 
 nav:
-  - Overview: index.md
+  - Overview:
+    - index.md
+    - Demo: demo.md
   - Architecture:
     - architecture/index.md
   - Access Control:

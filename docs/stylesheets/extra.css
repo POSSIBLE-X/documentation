@@ -1,0 +1,9 @@
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color:  rgb(30 46 77);
+    background-color:rgb(30 46 77);
+
+}
+.md-nav--secondary .md-nav__title {
+  background: none;
+  box-shadow: none; 
+}
