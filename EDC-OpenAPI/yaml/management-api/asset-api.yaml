@@ -9,7 +9,6 @@ info:
 paths:
   /v2/assets:
     post:
-      deprecated: true
       description: Creates a new asset together with a data address
       operationId: createAsset
       requestBody:
@@ -22,7 +21,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/IdResponse'
+                $ref: '#/components/schemas/IdResponseDto'
           description: Asset was created successfully. Returns the asset Id and created
             timestamp
         "400":
@@ -47,7 +46,6 @@ paths:
       tags:
       - Asset
     put:
-      deprecated: true
       description: "Updates an asset with the given ID if it exists. If the asset\
         \ is not found, no further action is taken. DANGER ZONE: Note that updating\
         \ assets can have unexpected results, especially for contract offers that\
@@ -57,7 +55,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Asset'
+              $ref: '#/components/schemas/AssetUpdateRequestDto'
       responses:
         "200":
           description: Asset was updated successfully
@@ -76,14 +74,13 @@ paths:
       - Asset
   /v2/assets/request:
     post:
-      deprecated: true
       description: ' all assets according to a particular query'
       operationId: requestAssets
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/QuerySpec'
+              $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
           content:
@@ -92,7 +89,7 @@ paths:
                 type: array
                 example: null
                 items:
-                  $ref: '#/components/schemas/Asset'
+                  $ref: '#/components/schemas/AssetResponseDto'
           description: The assets matching the query
         "400":
           content:
@@ -107,7 +104,6 @@ paths:
       - Asset
   /v2/assets/{assetId}/dataaddress:
     put:
-      deprecated: true
       description: Updates a DataAddress for an asset with the given ID.
       operationId: updateDataAddress
       parameters:
@@ -121,7 +117,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Asset'
+              $ref: '#/components/schemas/AssetUpdateRequestDto'
       responses:
         "200":
           description: Asset was updated successfully
@@ -147,7 +143,6 @@ paths:
       - Asset
   /v2/assets/{id}:
     delete:
-      deprecated: true
       description: "Removes an asset with the given ID if possible. Deleting an asset\
         \ is only possible if that asset is not yet referenced by a contract agreement,\
         \ in which case an error is returned. DANGER ZONE: Note that deleting assets\
@@ -195,7 +190,6 @@ paths:
       tags:
       - Asset
     get:
-      deprecated: true
       description: Gets an asset with the given ID
       operationId: getAsset
       parameters:
@@ -210,7 +204,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Asset'
+                $ref: '#/components/schemas/AssetResponseDto'
           description: The asset
         "400":
           content:
@@ -234,7 +228,6 @@ paths:
       - Asset
   /v2/assets/{id}/dataaddress:
     get:
-      deprecated: true
       description: Gets a data address of an asset with the given ID
       operationId: getAssetDataAddress
       parameters:
@@ -249,188 +242,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DataAddress'
+                $ref: '#/components/schemas/DataAddressDto'
           description: The data address
-        "400":
-          content:
-            application/json:
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: '#/components/schemas/ApiErrorDetail'
-          description: "Request was malformed, e.g. id was null"
-        "404":
-          content:
-            application/json:
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: '#/components/schemas/ApiErrorDetail'
-          description: An asset with the given ID does not exist
-      tags:
-      - Asset
-  /v3/assets:
-    post:
-      description: Creates a new asset together with a data address
-      operationId: createAsset_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AssetInput'
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/IdResponse'
-          description: Asset was created successfully. Returns the asset Id and created
-            timestamp
-        "400":
-          content:
-            application/json:
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: '#/components/schemas/ApiErrorDetail'
-          description: Request body was malformed
-        "409":
-          content:
-            application/json:
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: '#/components/schemas/ApiErrorDetail'
-          description: "Could not create asset, because an asset with that ID already\
-            \ exists"
-      tags:
-      - Asset
-    put:
-      description: "Updates an asset with the given ID if it exists. If the asset\
-        \ is not found, no further action is taken. DANGER ZONE: Note that updating\
-        \ assets can have unexpected results, especially for contract offers that\
-        \ have been sent out or are ongoing in contract negotiations."
-      operationId: updateAsset_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AssetInput'
-      responses:
-        "200":
-          description: Asset was updated successfully
-        "400":
-          content:
-            application/json:
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: '#/components/schemas/ApiErrorDetail'
-          description: "Request was malformed, e.g. id was null"
-        "404":
-          description: "Asset could not be updated, because it does not exist."
-      tags:
-      - Asset
-  /v3/assets/request:
-    post:
-      description: ' all assets according to a particular query'
-      operationId: requestAssets_1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/QuerySpec'
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: '#/components/schemas/AssetOutput'
-          description: The assets matching the query
-        "400":
-          content:
-            application/json:
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: '#/components/schemas/ApiErrorDetail'
-          description: Request body was malformed
-      tags:
-      - Asset
-  /v3/assets/{id}:
-    delete:
-      description: "Removes an asset with the given ID if possible. Deleting an asset\
-        \ is only possible if that asset is not yet referenced by a contract agreement,\
-        \ in which case an error is returned. DANGER ZONE: Note that deleting assets\
-        \ can have unexpected results, especially for contract offers that have been\
-        \ sent out or ongoing or contract negotiations."
-      operationId: removeAsset_1
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-          example: null
-      responses:
-        "200":
-          description: Asset was deleted successfully
-        "400":
-          content:
-            application/json:
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: '#/components/schemas/ApiErrorDetail'
-          description: "Request was malformed, e.g. id was null"
-        "404":
-          content:
-            application/json:
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: '#/components/schemas/ApiErrorDetail'
-          description: An asset with the given ID does not exist
-        "409":
-          content:
-            application/json:
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: '#/components/schemas/ApiErrorDetail'
-          description: "The asset cannot be deleted, because it is referenced by a\
-            \ contract agreement"
-      tags:
-      - Asset
-    get:
-      description: Gets an asset with the given ID
-      operationId: getAsset_1
-      parameters:
-      - in: path
-        name: id
-        required: true
-        schema:
-          type: string
-          example: null
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AssetOutput'
-          description: The asset
         "400":
           content:
             application/json:
@@ -458,7 +271,7 @@ components:
       example: null
       properties:
         invalidValue:
-          type: object
+          type: string
           example: null
         message:
           type: string
@@ -477,8 +290,6 @@ components:
           type: integer
           format: int64
           example: null
-        dataAddress:
-          $ref: '#/components/schemas/DataAddress'
         id:
           type: string
           example: null
@@ -502,65 +313,23 @@ components:
           $ref: '#/components/schemas/Asset'
         dataAddress:
           $ref: '#/components/schemas/DataAddress'
-    AssetInput:
+    AssetResponseDto:
       type: object
-      example:
-        '@context':
-          edc: https://w3id.org/edc/v0.0.1/ns/
-        '@id': definition-id
-        properties:
-          key: value
-        privateProperties:
-          privateKey: privateValue
-        dataAddress:
-          type: HttpData
+      example: null
       properties:
+        '@context':
+          type: object
+          example: null
         '@id':
           type: string
           example: null
         '@type':
           type: string
-          example: https://w3id.org/edc/v0.0.1/ns/Asset
-        dataAddress:
-          $ref: '#/components/schemas/DataAddress'
-        privateProperties:
-          type: object
-          additionalProperties:
-            type: object
-            example: null
           example: null
-        properties:
-          type: object
-          additionalProperties:
-            type: object
-            example: null
-          example: null
-    AssetOutput:
-      type: object
-      example:
-        '@context':
-          edc: https://w3id.org/edc/v0.0.1/ns/
-        '@id': definition-id
-        edc:properties:
-          edc:key: value
-        edc:privateProperties:
-          edc:privateKey: privateValue
-        edc:dataAddress:
-          edc:type: HttpData
-        edc:createdAt: 1688465655
-      properties:
-        '@id':
-          type: string
-          example: null
-        '@type':
-          type: string
-          example: https://w3id.org/edc/v0.0.1/ns/Asset
         createdAt:
           type: integer
           format: int64
           example: null
-        dataAddress:
-          $ref: '#/components/schemas/DataAddress'
         privateProperties:
           type: object
           additionalProperties:
@@ -573,19 +342,40 @@ components:
             type: object
             example: null
           example: null
-    Criterion:
+    AssetUpdateRequestDto:
       type: object
-      example:
-        '@context':
-          edc: https://w3id.org/edc/v0.0.1/ns/
-        '@type': Criterion
-        operandLeft: fieldName
-        operator: =
-        operandRight: some value
+      example: null
       properties:
+        '@context':
+          type: object
+          example: null
         '@type':
           type: string
-          example: https://w3id.org/edc/v0.0.1/ns/Criterion
+          example: null
+        privateProperties:
+          type: object
+          additionalProperties:
+            type: object
+            example: null
+          example: null
+        properties:
+          type: object
+          additionalProperties:
+            type: object
+            example: null
+          example: null
+      required:
+      - properties
+    CriterionDto:
+      type: object
+      example: null
+      properties:
+        '@context':
+          type: object
+          example: null
+        '@type':
+          type: string
+          example: null
         operandLeft:
           type: object
           example: null
@@ -595,25 +385,48 @@ components:
         operator:
           type: string
           example: null
+      required:
+      - operandLeft
+      - operator
     DataAddress:
       type: object
       example: null
       properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+            example: null
+          example: null
+    DataAddressDto:
+      type: object
+      example: null
+      properties:
+        '@context':
+          type: object
+          example: null
         '@type':
           type: string
-          example: https://w3id.org/edc/v0.0.1/ns/DataAddress
-        type:
+          example: null
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+            example: null
+          example: null
+      required:
+      - properties
+    IdResponseDto:
+      type: object
+      example: null
+      properties:
+        '@context':
+          type: object
+          example: null
+        '@id':
           type: string
           example: null
-    IdResponse:
-      type: object
-      example:
-        '@context':
-          edc: https://w3id.org/edc/v0.0.1/ns/
-        '@id': id-value
-        createdAt: 1688465655
-      properties:
-        '@id':
+        '@type':
           type: string
           example: null
         createdAt:
@@ -675,26 +488,21 @@ components:
           - "FALSE"
           - "NULL"
           example: null
-    QuerySpec:
+    QuerySpecDto:
       type: object
-      example:
-        '@context':
-          edc: https://w3id.org/edc/v0.0.1/ns/
-        '@type': QuerySpec
-        offset: 5
-        limit: 10
-        sortOrder: DESC
-        sortField: fieldName
-        filterExpression: []
+      example: null
       properties:
+        '@context':
+          type: object
+          example: null
         '@type':
           type: string
-          example: https://w3id.org/edc/v0.0.1/ns/QuerySpec
+          example: null
         filterExpression:
           type: array
           example: null
           items:
-            $ref: '#/components/schemas/Criterion'
+            $ref: '#/components/schemas/CriterionDto'
         limit:
           type: integer
           format: int32
