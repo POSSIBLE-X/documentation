@@ -31,9 +31,3 @@ You then use it in the HTTP header of your API requests:
 ```bash
 Authorization: Bearer <token>
 ```
-
-
-
-## Production Auth
-
-Work in progress...
