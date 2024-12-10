@@ -37,17 +37,17 @@ markdown_extensions:
 nav:
   - Overview:
     - index.md
-    - Demo: demo.md
-  - Catalog:
-    - catalog/index.md
-    - Background: catalog/background.md
-    - Access Control: catalog/auth.md
-    - API Guide: catalog/api.md
-    - Self Descriptions: catalog/self-descriptions.md
-    - Service Offerings: catalog/service-offerings.md
-  - Architecture:
-    - architecture/index.md
-  - Access Control:
-    - access-control/index.md
-  - Connector:
-    - connector/index.md
+#     - Demo: demo.md
+#   - Catalog:
+#     - catalog/index.md
+#     - Background: catalog/background.md
+#     - Access Control: catalog/auth.md
+#     - API Guide: catalog/api.md
+#     - Self Descriptions: catalog/self-descriptions.md
+#     - Service Offerings: catalog/service-offerings.md
+#   - Architecture:
+#     - architecture/index.md
+#   - Access Control:
+#     - access-control/index.md
+#   - Connector:
+#     - connector/index.md
