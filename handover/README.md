@@ -116,23 +116,24 @@ Now the usual process to update the Piveau UI looks like this:
 * The github workflow builds a new image
 * We reference the new image within the `piveau-ui.yaml`
 
-The piveau UI utilizes submodules to reference to the public piveau-ui project. As submodules are rather complicated and error prone, I helped myself with a small workaround: Instead of using the submodule I simply git clone the current state of the project in the correct repository. Up until now this works and it should work in the future as well.
+The piveau UI utilizes submodules to reference to the public piveau-ui project. As submodules are rather complicated and error prone, I helped myself with a small workaround: Instead of using the submodule I simply git clone the current state of the project in the correct repository. Up until now this works and it should work in the future as well.ƒ
 
 ### Integration Environment
 
 The integration environment is completly managed in Flux. So everything you need, can be found within the [ionos-infrastructure](https://github.com/POSSIBLE-X/ionos-infrastructure) repository.
 
-## Participants
+
+#### Participants
 
 Under `apps/integration-environment/participants/overlays` you will find every participants configuration.
 All participant share the common resources and a base configuration for its own services.
 The participants are sorted within the respective use cases.
 
-### Adding Participants
+##### Adding Participants
 
 If you want to add a new participant you will have have to perform the following steps:
 
-#### Setup an Ionos Account
+###### Setup an Ionos Account
 
 For this we utilize terraform. The respective file can be found under `terraform/variables.tf`.
 Simply append an entry with the following format
@@ -146,14 +147,28 @@ Simply append an entry with the following format
 
 Once committed to origin a github action will run and aplly the terraform changes. Congrats! You now have a namespace of the name `int-{uc_descriptor}-{participant_name}`. In it exists an `ionos-secret` with the dcd credentials.
 
-#### Create a New Participant Overlay
+###### Create a New Participant Overlay
 
 That step is straight forward: Copy an existing participants file into a new file (please store it accordingly within the overlays).
 Usually you will now only have to replace the previous use-case-descriptor within the file with the new own. Same with the participant name.
 
-#### Add the Participant to Flux
+###### Add the Participant to Flux
 
 There exists a file `clusters/possible-x/use-case-envs.yaml`. Simply add an entry there with your new participants file as reference.
+
+#### Deleting Offers
+
+Once we had the task to remove all offers from the EDC database.
+There exist two solutions for this problem:
+]
+- You simply kill the database, using psql. The EDC will setup the db anew ojn a restart
+- You unreference all resources within the `kustomization.yaml` of the participant. This will delete all relevant resources. After flux is done with this, you may revert that change and have a freshly installed environment. Please note that this will neither remove the S3 service nor the Access Keys
+
+#### Reseting Main Portal
+
+Similar to the Offer deletion you may
+- Delete the DB on the Postgres Service
+- Unreference and rereference DB service to delete the PVC
 
 ### Additional Tools
 
@@ -163,11 +178,39 @@ There exists a file `clusters/possible-x/use-case-envs.yaml`. Simply add an entr
 
 #### PG Admin
 
+It was asked by the developers to setup a PG Admin environment for the Deployment
+
 
 ## Future Improvements
 
 Here is a list of things that may improve the overall
 
-- Remove the Helm Charts entirely - it would be good to migrate the Dev Deployment Process to 
+### Remove the Helm Charts entirely
 
+It would be good to migrate the Dev Deployment Process to the
+kustomize approach as well.
+The biggest problems here would probably be that there
+would be small changes in the setup, as the current status has both
+the consumer and the provider edc in the same namespace.
 
+Another challenge might be the PG Admin setup. It retrieves the
+DB passwords from the secrets in its namespace. If the namespace
+should split up, this might be a little bit more challenging. Maybe a setup with a dedicated service role could be helpful here.
+This might be an interesting opportunity to add the database access to the int environment as well.
+
+### Automate the Provisioning of the EDCs
+
+In theory there would be ways to automatically create and setup new Participants for the Int environment.
+
+Here I want to illustrate a possible way to reach that goal. There will still be issues to figure out and all of this requires a solution for autorization for the acceptance process and authentication of the user:
+
+The basic steps are
+- setup the S3 Bucket
+- create and configure the participant
+- communicate relevant credentials (e.g. the IONOS DCD creds)
+
+This could be implemented for example by triggering a git commit on acceptance. The commit could add the relevant entry to the terraform file and add a new participant to the list of participants. For details see the paragraph about adding participant in this doc.
+
+The init job of the participant could be enhanced to send the relevant credentials on creation.
+
+This approach would utilize the existing infrastructure and still allow for a gitops apprach.
