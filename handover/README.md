@@ -86,7 +86,40 @@ An exception to rule is the configuration of the consumer and provider EDCs. It 
 
 ### Integration Environment
 
+The integration environment is completly managed in Flux. So everything you need, can be found within the [ionos-infrastructure](https://github.com/POSSIBLE-X/ionos-infrastructure) repository.
 
+## Participants
+
+Under `apps/integration-environment/participants/overlays` you will find every participants configuration.
+All participant share the common resources and a base configuration for its own services.
+The participants are sorted within the respective use cases.
+
+### Adding Participants
+
+If you want to add a new participant you will have have to perform the following steps:
+
+#### Setup an Ionos Account
+
+For this we utilize terraform. The respective file can be found under `terraform/variables.tf`.
+Simply append an entry with the following format
+
+```js
+    {
+      participant_name = "participant_name"
+      use_case = "uc_descriptor"
+    }
+```
+
+Once committed to origin a github action will run and aplly the terraform changes. Congrats! You now have a namespace of the name `int-{uc_descriptor}-{participant_name}`. In it exists an `ionos-secret` with the dcd credentials.
+
+#### Create a New Participant Overlay
+
+That step is straight forward: Copy an existing participants file into a new file (please store it accordingly within the overlays).
+Usually you will now only have to replace the previous use-case-descriptor within the file with the new own. Same with the participant name.
+
+#### Add the Participant to Flux
+
+There exists a file `clusters/possible-x/use-case-envs.yaml`. Simply add an entry there with your new participants file as reference.
 
 ### Additional Tools
 
