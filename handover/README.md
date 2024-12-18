@@ -84,6 +84,40 @@ The helm charts can be found in the deployment/helm directory. The charts are ho
 The values are usually located directly next to helm directory, e.g. in a dev directory. Also additional sealed secrets are stored there.
 An exception to rule is the configuration of the consumer and provider EDCs. It includes some secret data, that should not be comited to a public repository. Hence, to this date the required values are stored in an offline repository, that is available amon g the developers.
 
+#### Catalog Deployment
+
+The Fraunhofer Catalog is a rather complex system. Its setup is located in `apps/dev-environment/common/catalog` of the `ionos-infrastructure` repository.
+
+There are a lot of moving parts - but the most crucial are the update of the Shapes, the update of the configuration files and the update of the Piveau UI service
+
+##### Updating Shapes
+
+The shapes are located in the `fh-config` folder and referenced in the configMapGenerator `catalog-config-cm`. This is configured in the catalogs `kustomization.yaml`
+
+
+##### Updating Config Files
+
+Similar to the shapes the config is stored in the `fh-config` directory and referenced in the `catalog-config-cm`. The exact locations of these config files on the host system can be found in the individual yaml files of the services. Usually the ConfigMap is referenced there as a volume and the individual file is associated via a `volumeMount`.
+
+##### Updating the Piveau UI
+
+For reasons we have a separate workflow to generate the Piveau UI for our system. The process there is somewhat complicated:
+
+There exists a piveau-ui project within the Fraunhofer Gitlab. We have access to this repository via a Personal Access Token - granted from the Fraunhofer Team.
+
+We checked out the referenced project - the relevant branch is the POSSIBLE branch in regard to our project. Beyond that we setup an additional remote within github - the [piveau-ui repository](https://github.com/POSSIBLE-X/piveau-ui).
+
+As a github worklfow requires some changes and because we want specific control for changes, we created a develop branch for that remote.
+
+Now the usual process to update the Piveau UI looks like this:
+* We fetch the changes from gitlab locally (the POSSIBLE branch)
+* We merge the changes from POSSIBLE into the develop branch
+* We push the develop branch to github
+* The github workflow builds a new image
+* We reference the new image within the `piveau-ui.yaml`
+
+The piveau UI utilizes submodules to reference to the public piveau-ui project. As submodules are rather complicated and error prone, I helped myself with a small workaround: Instead of using the submodule I simply git clone the current state of the project in the correct repository. Up until now this works and it should work in the future as well.
+
 ### Integration Environment
 
 The integration environment is completly managed in Flux. So everything you need, can be found within the [ionos-infrastructure](https://github.com/POSSIBLE-X/ionos-infrastructure) repository.
