@@ -156,6 +156,47 @@ This will fetch changes from POSSIBLE and merge them into your local develop bra
 The integration environment is completly managed in Flux. So everything you need, can be found within the [ionos-infrastructure](https://github.com/POSSIBLE-X/ionos-infrastructure) repository.
 
 
+#### Upgrading Certs
+
+The certificates we use are all provisioned by the Let's Encrypt. We simply use the generated secrets.
+E.g. the did service is configured with the following
+```yaml
+args:
+  - |
+    apk add gettext
+    export DBHOST=$(env |grep DIDWEB_DB_SERVICE_HOST|awk -F '=' '{print $2}') 
+    envsubst < /app/application-ionos.yaml> /app/application.yaml
+    wget https://letsencrypt.org/certs/isrgrootx1.pem -O /certs/letsencryptroot.pem
+    cat /certs/tls/tls.crt /certs/letsencryptroot.pem > /certs/cert.pem
+    java -jar did-web-service.jar
+command:
+  - /bin/sh
+  - -c
+volumeMounts:
+  - mountPath: /app/application-ionos.yaml
+    name: config
+    subPath: did-application.yaml
+  - mountPath: /certs/tls
+    name: certs
+envFrom:
+  - secretRef:
+      name: appuser.didweb-db.credentials.postgresql.acid.zalan.do
+env:
+  - name: COMMONCERTPATH
+    value: /certs/cert.pem
+...      
+
+volumes:
+  - secret:
+      secretName: did-web-ssl-certificate
+    name: certs
+
+```
+
+This takes the did-web-ssl-certificate file and puts them under /certs/tls.
+As the services requires the whole cert chain, we retrieve that from letsencrypt.org,
+put it into a file and concat those files into /certs/cert.pem.
+
 #### Participants
 
 Under `apps/integration-environment/participants/overlays` you will find every participants configuration.
