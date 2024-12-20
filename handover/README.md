@@ -48,6 +48,10 @@ We have essentially two environments. Once we had a similar environment for pres
 
 ### Development Environment
 
+#### Certificate Management
+
+Certificates are stored in 
+
 #### Deployment
 
 The catalog and the did service are deployed via Flux. All other applications are deployed in a similar way using helm charts.
@@ -116,7 +120,36 @@ Now the usual process to update the Piveau UI looks like this:
 * The github workflow builds a new image
 * We reference the new image within the `piveau-ui.yaml`
 
-The piveau UI utilizes submodules to reference to the public piveau-ui project. As submodules are rather complicated and error prone, I helped myself with a small workaround: Instead of using the submodule I simply git clone the current state of the project in the correct repository. Up until now this works and it should work in the future as well.ƒ
+The piveau UI utilizes submodules to reference to the public piveau-ui project. As submodules are rather complicated and error prone, I helped myself with a small workaround: Instead of using the submodule I simply git clone the current state of the project in the correct repository. Up until now this works and it should work in the future as well.
+
+
+TL;DR - this is the simple script:
+
+```bash
+git clone https://gitlab.com/piveau/ui/piveau-ui.git # clone this from gitlab - credentials are given from Fraunhofer
+cd piveau-ui
+git remote add github https://github.com/POSSIBLE-X/piveau-ui.git # Add the github remote
+git fetch --all
+git checkout -b develop github/develop # Create a branch develop, that tracks the github branch
+git checkout -b POSSIBLE origin/POSSIBLE # Create a branch develop, that tracks the gitlab branch
+```
+
+Now you have a repository with two remotes and two branches. One branch tracks the origin (gitlab) and one github.
+Now you can do
+
+```bash
+git checkout POSSIBLE
+git fetch
+git pull
+git checkout develop
+git fetch
+git pull
+git merge POSSIBLE
+git push
+```
+
+This will fetch changes from POSSIBLE and merge them into your local develop branch and push them to github
+
 
 ### Integration Environment
 
@@ -213,4 +246,4 @@ This could be implemented for example by triggering a git commit on acceptance. 
 
 The init job of the participant could be enhanced to send the relevant credentials on creation.
 
-This approach would utilize the existing infrastructure and still allow for a gitops apprach.
+This approach would utilize the existing infrastructure and still allow for a gitops approach.
